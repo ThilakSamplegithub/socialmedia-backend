@@ -1,0 +1,17 @@
+const express=require("express")
+const {userRouter}=require("./controller/users.routes")
+const {postRouter}=require("./controller/posts.routes")
+const {connection}=require("./config/db.js")
+const { userauthMiddleware } = require("./middleware/userauth.middleware")
+const app=express()
+app.use(express.json())
+require('dotenv').config()
+app.get("/",(req,res)=>{
+    res.send("welcome")
+})
+app.use("/users",userRouter)
+app.use(userauthMiddleware)
+app.use("/posts",postRouter)
+app.listen(process.env.PORT,()=>{
+    console.log(`port ${process.env.PORT} is running`)
+})
